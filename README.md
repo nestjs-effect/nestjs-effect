@@ -1,7 +1,5 @@
 # @nestjs-effect
 
-[![npm version](https://badge.fury.io/js/nestjs-effect.svg)](https://badge.fury.io/js/nestjs-effect)
-
 > [!WARNING]  
 > :warning: nestjs-effect is **not** yet stable until 1.0.0. Breaking changes may occurs :warning:
 >
