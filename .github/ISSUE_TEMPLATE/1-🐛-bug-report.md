@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. Ubuntu 22.04]
  - node [e.g. 22.11.0]
  - npm [e.g. 10.9.0]
- - effect-nestjs [e.g. 1.0.17]
+ - nestjs-effect [e.g. 1.0.17]
 
 **Additional context**
 Add any other context about the problem here.
