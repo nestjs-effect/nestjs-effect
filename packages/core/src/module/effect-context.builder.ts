@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DiscoveryService, ModuleRef } from "@nestjs/core";
 import { Context, Layer, ManagedRuntime } from "effect";
-import { EffectConfig } from "../config/effect.config";
+import { EffectConfig } from "../shared/config/effect.config";
 
 @Injectable()
 export class EffectContextBuilder {

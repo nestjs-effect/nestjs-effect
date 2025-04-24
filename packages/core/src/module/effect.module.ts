@@ -1,10 +1,10 @@
 import { DynamicModule, Module, Provider } from "@nestjs/common";
 import { DiscoveryModule, DiscoveryService, ModuleRef } from "@nestjs/core";
 import {
-  EffectConfig,
-  EffectFeatureConfig,
-  EffectRootConfig,
-} from "../config/effect.config";
+  EffectModuleConfig,
+  EffectModuleFeatureConfig,
+  EffectModuleRootConfig,
+} from "../shared/config/effect-module.config";
 import { EFFECT_CONFIG, EFFECT_RUNTIME } from "../shared/token/effect.token";
 import { EffectContextBuilder } from "./effect-context.builder";
 
@@ -12,21 +12,21 @@ import { EffectContextBuilder } from "./effect-context.builder";
   imports: [DiscoveryModule],
 })
 export class EffectModule {
-  static forRoot(options: EffectRootConfig = {}): DynamicModule {
-    const effectContext: Provider = this.getEffectContext(options);
-    const effectOptions: Provider = this.getEffectOptions(options);
+  static forRoot(moduleConfig: EffectModuleRootConfig = {}): DynamicModule {
+    const effectRuntime: Provider = this.getEffectRuntime(moduleConfig);
+    const effectConfig: Provider = this.getEffectConfig(moduleConfig);
 
     return {
       global: true,
       module: EffectModule,
-      providers: [effectContext, effectOptions],
-      exports: [effectContext, effectOptions],
+      providers: [effectRuntime, effectConfig],
+      exports: [effectRuntime, effectConfig],
     };
   }
 
-  static forFeature(options: EffectFeatureConfig): DynamicModule {
-    const effectContext: Provider = this.getEffectContext(options);
-    const effectOptions: Provider = this.getEffectOptions(options);
+  static forFeature(moduleConfig: EffectModuleFeatureConfig): DynamicModule {
+    const effectContext: Provider = this.getEffectRuntime(moduleConfig);
+    const effectOptions: Provider = this.getEffectConfig(moduleConfig);
 
     return {
       global: false,
@@ -36,26 +36,29 @@ export class EffectModule {
     };
   }
 
-  private static getEffectContext(options: EffectConfig): Provider {
+  private static getEffectRuntime(moduleConfig: EffectModuleConfig): Provider {
     return {
       provide: EFFECT_RUNTIME,
       useFactory: (
         discoveryService: DiscoveryService,
         moduleRef: ModuleRef
       ) => {
-        return new EffectContextBuilder(discoveryService, moduleRef, options)
-          .runtime;
+        return new EffectContextBuilder(
+          discoveryService,
+          moduleRef,
+          moduleConfig
+        ).runtime;
       },
       inject: [DiscoveryService, ModuleRef],
     };
   }
 
-  private static getEffectOptions(options: EffectConfig): Provider {
+  private static getEffectConfig(moduleConfig: EffectModuleConfig): Provider {
     return {
       provide: EFFECT_CONFIG,
       useValue: {
-        mapError: options.mapError,
-        mapValue: options.mapValue,
+        mapError: moduleConfig.mapError,
+        mapValue: moduleConfig.mapValue,
       },
     };
   }

@@ -1,17 +1,19 @@
 import { Either, Layer } from "effect";
 
-type BaseConfig = {
+type ModuleBaseConfig = {
   autoServiceDiscovery?: boolean;
   mapValue?: (value: any) => any;
   mapError?: (error: any) => Either.Either<any, any>;
 };
 
-export type EffectRootConfig = {
+export type EffectModuleRootConfig = {
   services?: Layer.Layer<any, any, any>[];
-} & BaseConfig;
+} & ModuleBaseConfig;
 
-export type EffectFeatureConfig = {
+export type EffectModuleFeatureConfig = {
   services: Layer.Layer<any, any, any>[];
-} & BaseConfig;
+} & ModuleBaseConfig;
 
-export type EffectConfig = EffectRootConfig | EffectFeatureConfig;
+export type EffectModuleConfig =
+  | EffectModuleRootConfig
+  | EffectModuleFeatureConfig;

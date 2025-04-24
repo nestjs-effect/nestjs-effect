@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { Effect, Either, ManagedRuntime, pipe } from "effect";
 import { map, Observable } from "rxjs";
-import { EffectConfig } from "../../config/effect.config";
+import { EffectConfig } from "../../shared/config/effect.config";
 import { EFFECT_CONFIG, EFFECT_RUNTIME } from "../../shared/token/effect.token";
 
 @Injectable()
