@@ -1,5 +1,7 @@
 # @nestjs-effect/core
 
+[![npm version](https://badge.fury.io/js/@nestjs-effect%2Fcore.svg)](https://badge.fury.io/js/@nestjs-effect%2Fcore)
+
 ## Docs
 
 | Package                            | Description                   |
