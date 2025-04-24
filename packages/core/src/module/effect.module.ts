@@ -5,6 +5,7 @@ import {
   EffectFeatureConfig,
   EffectRootConfig,
 } from "../config/effect.config";
+import { EFFECT_CONFIG, EFFECT_RUNTIME } from "../shared/token/effect.token";
 import { EffectContextBuilder } from "./effect-context.builder";
 
 @Module({
@@ -37,13 +38,13 @@ export class EffectModule {
 
   private static getEffectContext(options: EffectConfig): Provider {
     return {
-      provide: "EFFECT_CONTEXT",
+      provide: EFFECT_RUNTIME,
       useFactory: (
         discoveryService: DiscoveryService,
         moduleRef: ModuleRef
       ) => {
         return new EffectContextBuilder(discoveryService, moduleRef, options)
-          .context;
+          .runtime;
       },
       inject: [DiscoveryService, ModuleRef],
     };
@@ -51,7 +52,7 @@ export class EffectModule {
 
   private static getEffectOptions(options: EffectConfig): Provider {
     return {
-      provide: "EFFECT_OPTIONS",
+      provide: EFFECT_CONFIG,
       useValue: {
         mapError: options.mapError,
         mapValue: options.mapValue,

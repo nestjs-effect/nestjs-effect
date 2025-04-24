@@ -5,17 +5,18 @@ import {
   Injectable,
   NestInterceptor,
 } from "@nestjs/common";
-import { Effect, Either, Layer, pipe } from "effect";
+import { Effect, Either, ManagedRuntime, pipe } from "effect";
 import { map, Observable } from "rxjs";
 import { EffectConfig } from "../../config/effect.config";
+import { EFFECT_CONFIG, EFFECT_RUNTIME } from "../../shared/token/effect.token";
 
 @Injectable()
 export class EffectRuntimeInterceptor implements NestInterceptor {
   constructor(
-    @Inject("EFFECT_CONTEXT")
-    private readonly effectContext: Layer.Layer<any>,
-    @Inject("EFFECT_OPTIONS")
-    private readonly effectOptions: EffectConfig
+    @Inject(EFFECT_RUNTIME)
+    private readonly runtime: ManagedRuntime.ManagedRuntime<never, never>,
+    @Inject(EFFECT_CONFIG)
+    private readonly effectConfig: EffectConfig
   ) {}
 
   intercept(
@@ -30,8 +31,7 @@ export class EffectRuntimeInterceptor implements NestInterceptor {
 
         return pipe(
           this.mapEffect(value) as Effect.Effect<any, any, never>,
-          Effect.provide(this.effectContext),
-          Effect.runPromise
+          this.runtime.runPromise
         );
       })
     );
@@ -44,13 +44,13 @@ export class EffectRuntimeInterceptor implements NestInterceptor {
       const value = yield* Effect.either(effect);
 
       if (Either.isRight(value)) {
-        return this.effectOptions.mapValue
-          ? this.effectOptions.mapValue(value.right)
+        return this.effectConfig.mapValue
+          ? this.effectConfig.mapValue(value.right)
           : value.right;
       }
 
-      const errorMapping = this.effectOptions.mapError
-        ? this.effectOptions.mapError(value.left)
+      const errorMapping = this.effectConfig.mapError
+        ? this.effectConfig.mapError(value.left)
         : Either.left(value.left);
 
       if (Either.isRight(errorMapping)) {

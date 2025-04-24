@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { DiscoveryService, ModuleRef } from "@nestjs/core";
-import { Context, Layer } from "effect";
+import { Context, Layer, ManagedRuntime } from "effect";
 import { EffectConfig } from "../config/effect.config";
 
 @Injectable()
 export class EffectContextBuilder {
-  readonly context: Layer.Layer<any, any, any>;
+  readonly runtime: ManagedRuntime.ManagedRuntime<never, never>;
 
   constructor(
     private readonly discoveryService: DiscoveryService,
@@ -14,9 +14,13 @@ export class EffectContextBuilder {
   ) {
     const allLayers = this.getAllLayers();
 
-    this.context = allLayers.reduce(
+    const appLayer = allLayers.reduce(
       (acc, provider) => Layer.provideMerge(acc, provider),
       Layer.empty as unknown as Layer.Layer<any, any, any>
+    );
+
+    this.runtime = ManagedRuntime.make(
+      appLayer as unknown as Layer.Layer<never, never, never>
     );
   }
 
