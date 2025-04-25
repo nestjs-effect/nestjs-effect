@@ -73,13 +73,14 @@ Or at the global level within the module
 
 ```js
 import { EffectValidationPipe } from "@nestjs-effect/core";
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [],
   controllers: [],
   providers: [
     {
-      provide: "APP_PIPE",
+      provide: APP_PIPE,
       useClass: EffectValidationPipe,
     },
   ],
