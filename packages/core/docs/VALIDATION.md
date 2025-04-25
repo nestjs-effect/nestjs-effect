@@ -57,7 +57,7 @@ createUser(@Body() userDTO: UserDTO) {
 
 ## Validation Pipe
 
-In order to validate the DTO we need to either add the custom effect validation pipe at the route level
+In order to validate the DTO we need to either add the custom effect validation pipe at the route/controller level
 
 ```js
 import { EffectValidationPipe } from '@nestjs-effect/core';
