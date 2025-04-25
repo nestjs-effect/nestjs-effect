@@ -63,7 +63,7 @@ In order to validate the DTO we need to either add the custom effect validation 
 import { EffectValidationPipe } from '@nestjs-effect/core';
 
 @Post()
-@UsePipes(new EffectValidationPipe())
+@UsePipes(EffectValidationPipe)
 createUser(@Body() userDTO: UserDTO) {
    //
 }
@@ -86,20 +86,6 @@ import { EffectValidationPipe } from "@nestjs-effect/core";
 })
 export class AppModule {}
 ```
-
-A list of option can be provided to the `EffectValidationPipe`
-
-```js
-export interface EffectValidationPipeConfig {
-  strict?: boolean; // default true
-  customError?: new (error: ParseError) => any;
-}
-```
-
-| Name          | Description                                                                                                                                                                                                                                                                 |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `strict`      | if `true` a Error will be thrown either if the validation fail or if the type provided is **not** an Effect Schema, if `false` and an Effect Schema was not provided, then the value will be returned without validation                                                    |
-| `customError` | A custom class that accept a param `error: ParseError` as constructor that contains all the information about the Schema validation failure, [see more](https://effect.website/docs/schema/getting-started/#parseerror). this class will be **thrown** when validation fail |
 
 # Q/A
 
