@@ -1,6 +1,6 @@
 {
   "name": "@nestjs-effect/core",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "homepage": "https://github.com/nestjs-effect/nestjs-effect",
   "bugs": {
     "url": "https://github.com/nestjs-effect/nestjs-effect/issues",
@@ -29,16 +29,22 @@
     "hooks": "lefthook install"
   },
   "dependencies": {
-    "@nestjs/common": "^11.1.0",
-    "@nestjs/core": "^11.1.0",
-    "effect": "^3.14.13",
-    "reflect-metadata": "^0.2.2",
+    "effect": "^3.14.13"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0 || ^11.0.0",
+    "@nestjs/core": "^10.0.0 || ^11.0.0",
+    "reflect-metadata": "^0.1.13 || ^0.2.0",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "lefthook": "^1.11.11",
     "typescript": "^5.8.3",
-    "vitest": "^3.1.2"
+    "vitest": "^3.1.2",
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/core": "^11.1.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
