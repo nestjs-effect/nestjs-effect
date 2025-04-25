@@ -1,15 +1,20 @@
 import {
   ArgumentMetadata,
   BadRequestException,
+  Inject,
   Injectable,
   PipeTransform,
 } from "@nestjs/common";
 import { Either, Schema } from "effect";
-import { EffectValidationPipeConfig } from "./effect-validation.config";
+import { EffectConfig } from "../../shared/config/effect.config";
+import { EFFECT_CONFIG } from "../../shared/token/effect.token";
 
 @Injectable()
 export class EffectValidationPipe implements PipeTransform {
-  constructor(private config?: EffectValidationPipeConfig) {}
+  constructor(
+    @Inject(EFFECT_CONFIG)
+    private readonly effectConfig?: EffectConfig
+  ) {}
 
   transform(value: unknown, metadata: ArgumentMetadata): any {
     if (Schema.isSchema(metadata.metatype)) {
@@ -30,7 +35,7 @@ export class EffectValidationPipe implements PipeTransform {
   }
 
   private handleNonSchemaValue(value: unknown): any {
-    if (!this.config?.strict) {
+    if (!this.effectConfig?.validation?.strict) {
       return value;
     }
 
@@ -38,8 +43,8 @@ export class EffectValidationPipe implements PipeTransform {
   }
 
   private throwValidationError(error?: any): void {
-    if (this.config?.customError) {
-      throw new this.config.customError(error);
+    if (this.effectConfig?.validation?.customError) {
+      throw new this.effectConfig.validation.customError(error);
     }
 
     throw new BadRequestException("Validation failed");

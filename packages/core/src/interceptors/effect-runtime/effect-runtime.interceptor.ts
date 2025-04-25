@@ -42,15 +42,16 @@ export class EffectRuntimeInterceptor implements NestInterceptor {
   ): Effect.Effect<any, any, never> {
     return Effect.gen(this, function* () {
       const value = yield* Effect.either(effect);
+      const runtimeConfig = this.effectConfig.runtime;
 
       if (Either.isRight(value)) {
-        return this.effectConfig.mapValue
-          ? this.effectConfig.mapValue(value.right)
+        return runtimeConfig?.mapValue
+          ? runtimeConfig.mapValue(value.right)
           : value.right;
       }
 
-      const errorMapping = this.effectConfig.mapError
-        ? this.effectConfig.mapError(value.left)
+      const errorMapping = runtimeConfig?.mapError
+        ? runtimeConfig.mapError(value.left)
         : Either.left(value.left);
 
       if (Either.isRight(errorMapping)) {

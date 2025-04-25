@@ -10,28 +10,20 @@ import { of } from "rxjs";
 import { describe, expect, it } from "vitest";
 import { EffectRuntimeInterceptor } from "./effect-runtime.interceptor";
 
-class Random extends Context.Tag("Random")<
-  Random,
-  { readonly next: Effect.Effect<number> }
->() {}
-
-const RandomTest = Layer.succeed(Random, {
-  next: Effect.succeed(1),
-});
+const randomTag = Context.GenericTag<number>("randomTag");
+const randomLayer = Layer.succeed(randomTag, 1);
 
 const pureEffect = Effect.succeed(1);
 
 const effect = Effect.gen(function* () {
-  const random = yield* Random;
+  const random = yield* randomTag;
 
-  return yield* random.next;
+  return random;
 });
 
 const emptyRuntime = ManagedRuntime.make(Layer.empty);
 
-const fullRuntime = ManagedRuntime.make(
-  Layer.empty.pipe(Layer.provideMerge(RandomTest))
-);
+const fullRuntime = ManagedRuntime.make(randomLayer);
 
 describe("EffectRuntimeInterceptor", () => {
   describe("run", () => {
@@ -73,7 +65,9 @@ describe("EffectRuntimeInterceptor", () => {
   describe("map", () => {
     it("should map effect value", () => {
       const interceptor = new EffectRuntimeInterceptor(emptyRuntime, {
-        mapValue: (value) => value + 1,
+        runtime: {
+          mapValue: (value) => value + 1,
+        },
       });
 
       const obs = interceptor
@@ -91,7 +85,9 @@ describe("EffectRuntimeInterceptor", () => {
 
     it("should fallback with right mapError", () => {
       const interceptor = new EffectRuntimeInterceptor(emptyRuntime, {
-        mapError: (error) => Either.right(error + 1),
+        runtime: {
+          mapError: (error) => Either.right(error + 1),
+        },
       });
 
       const obs = interceptor
@@ -109,7 +105,9 @@ describe("EffectRuntimeInterceptor", () => {
 
     it("should throw with left mapError", () => {
       const interceptor = new EffectRuntimeInterceptor(emptyRuntime, {
-        mapError: (error) => Either.left("error"),
+        runtime: {
+          mapError: (error) => Either.left("error"),
+        },
       });
 
       const obs = interceptor

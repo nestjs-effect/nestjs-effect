@@ -57,8 +57,8 @@ export class EffectModule {
     return {
       provide: EFFECT_CONFIG,
       useValue: {
-        mapError: moduleConfig.mapError,
-        mapValue: moduleConfig.mapValue,
+        runtime: moduleConfig.runtime,
+        validation: moduleConfig.validation,
       },
     };
   }

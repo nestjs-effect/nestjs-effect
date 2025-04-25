@@ -49,7 +49,7 @@ describe("EffectValidationPipe", () => {
 
   describe("Config strict", () => {
     it("should throw error if config is strict", () => {
-      const pipe = new EffectValidationPipe({ strict: true });
+      const pipe = new EffectValidationPipe({ validation: { strict: true } });
 
       try {
         const result = pipe.transform(
@@ -70,7 +70,7 @@ describe("EffectValidationPipe", () => {
     });
 
     it("should return value if config is not strict", () => {
-      const pipe = new EffectValidationPipe({ strict: false });
+      const pipe = new EffectValidationPipe({ validation: { strict: false } });
 
       const value = {
         id: 1,
@@ -90,8 +90,10 @@ describe("EffectValidationPipe", () => {
       class MyCustomError {}
 
       const pipe = new EffectValidationPipe({
-        strict: true,
-        customError: MyCustomError,
+        validation: {
+          strict: true,
+          customError: MyCustomError,
+        },
       });
 
       try {
@@ -113,7 +115,9 @@ describe("EffectValidationPipe", () => {
     });
     it("should throw default error if custom error is not provided", () => {
       const pipe = new EffectValidationPipe({
-        strict: true,
+        validation: {
+          strict: true,
+        },
       });
 
       try {

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DiscoveryService, ModuleRef } from "@nestjs/core";
 import { Context, Layer, ManagedRuntime } from "effect";
-import { EffectConfig } from "../shared/config/effect.config";
+import { EffectModuleConfig } from "../shared/config/effect-module.config";
 
 @Injectable()
 export class EffectContextBuilder {
@@ -10,7 +10,7 @@ export class EffectContextBuilder {
   constructor(
     private readonly discoveryService: DiscoveryService,
     private readonly moduleRef: ModuleRef,
-    private readonly options?: EffectConfig
+    private readonly moduleConfig?: EffectModuleConfig
   ) {
     const allLayers = this.getAllLayers();
 
@@ -25,9 +25,9 @@ export class EffectContextBuilder {
   }
 
   private getAllLayers(): Layer.Layer<any, any, any>[] {
-    const services = this.options?.services ?? [];
+    const services = this.moduleConfig?.services ?? [];
 
-    if (!this.options?.autoServiceDiscovery) {
+    if (!this.moduleConfig?.autoServiceDiscovery) {
       return services;
     }
 
