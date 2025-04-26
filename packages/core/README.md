@@ -94,5 +94,5 @@ To go futher go to the dedicated documentation
 
 | Package                            | Description                   |
 | ---------------------------------- | ----------------------------- |
-| [validation](./docs/VALIDATION.md) | To validate Effect with pipes |
-| [runtime](./docs/RUNTIME.md)       | To run Effect                 |
+| [validation](https://github.com/nestjs-effect/nestjs-effect/blob/main/packages/core/docs/VALIDATION.md) | To validate Effect with pipes |
+| [runtime](https://github.com/nestjs-effect/nestjs-effect/blob/main/packages/core/docs/RUNTIME.md)       | To run Effect                 |
