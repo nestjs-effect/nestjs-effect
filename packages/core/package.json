@@ -1,6 +1,7 @@
 {
   "name": "@nestjs-effect/core",
   "version": "0.1.6",
+  "type": "module",
   "homepage": "https://github.com/nestjs-effect/nestjs-effect",
   "bugs": {
     "url": "https://github.com/nestjs-effect/nestjs-effect/issues",
